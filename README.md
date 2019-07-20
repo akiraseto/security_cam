@@ -5,3 +5,4 @@
 ## ローカルにconfig.pyを用意
 TOKEN = '○○○○'  
 形式でLineNotifyのトークンを記述する
+

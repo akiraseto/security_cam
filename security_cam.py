@@ -58,4 +58,3 @@ try:
 except KeyboardInterrupt:
         pass
 GPIO.cleanup()
-

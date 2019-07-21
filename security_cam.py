@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
-from datetime import datetime
-import requests, cv2, config
+import datetime, requests, cv2, os, glob, config
 
 # LINE Notifyトークン
 TOKEN = config.TOKEN
@@ -19,13 +18,23 @@ camera = cv2.VideoCapture(0)
 IMG_SIZE = (600,400)
 
 # 写真の撮影コマンドを実行(ファイル名を日時に)
-last_post = datetime(2000, 1, 1) # 適当に初期化
+last_post = datetime.datetime(2000, 1, 1) # 適当に初期化
 def take_photo():
     global last_post
     # 写真を撮影
-    now = datetime.now()
-    fname = "img/" + now.strftime('%Y-%m-%d_%H-%M-%S') + ".jpg"
+    now = datetime.datetime.now()
+    fname = "/media/pi/rasUSB/security_cam/img/" + now.strftime('%Y-%m-%d_%H-%M-%S') + ".jpg"
 
+    # 古い画像を削除
+    file_list = glob.glob("/media/pi/rasUSB/security_cam/img/*jpg")
+    dif_time = datetime.timedelta(days=3)
+    for file in file_list:
+        file_time = datetime.datetime.fromtimestamp(os.path.getatime(file))
+        if (file_time < now  - dif_time):
+            print("remove：{0}".format(file))
+            os.remove(file)
+
+    # 撮影
     _, frame = camera.read()
     img = cv2.resize(frame, IMG_SIZE)
     ret = cv2.imwrite(fname, img)

@@ -8,7 +8,7 @@ API = 'https://notify-api.line.me/api/notify'
 
 # GPIOポートの設定
 SENSOR_PORT = 23
-LED_PORT = 4
+LED_PORT = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SENSOR_PORT, GPIO.IN)
 GPIO.setup(LED_PORT, GPIO.OUT)
